@@ -1,0 +1,69 @@
+{% set version = "2.5.0" %}
+{% set name = "httpx2" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: e2df9cb4611021527ff8a675b1c320b610a2ec397acc8d6fe6e91df2d9b33c29
+
+build:
+  skip: true # [py<310]
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
+  entry_points:
+    - httpx2 = httpx2:main
+
+requirements:
+  host:
+    - hatch-fancy-pypi-readme
+    - hatchling
+    - pip
+    - python
+    - uv-dynamic-versioning >=0.8.0
+  run:
+    - anyio
+    - httpcore2 =={{ version }}
+    - idna >=3.18
+    - python
+    - truststore >=0.10
+    - typing_extensions >=4.5.0 # [py<313]
+  run_constrained:
+    - click 8.*
+    - pygments 2.*
+    - rich >=10,<16
+    - h2 >=3,<5
+    - socksio 1.*
+    - zstandard >=0.18.0
+
+test:
+  imports:
+    - httpx2
+  requires:
+    - pip
+    - click 8.*
+    - pygments 2.*
+    - rich >=10,<16
+  commands:
+    - pip check
+    - httpx2 --help
+
+about:
+  home: https://github.com/pydantic/httpx2
+  summary: The next generation HTTP client.
+  description: |
+    HTTPX2 is a fully featured HTTP client library for Python. It includes an
+    integrated command line client, has support for both HTTP/1.1 and HTTP/2,
+    and provides both sync and async APIs.
+  license: BSD-3-Clause
+  license_family: BSD
+  license_file: LICENSE.md
+  dev_url: https://github.com/pydantic/httpx2
+  doc_url: https://httpx2.pydantic.dev
+
+extra:
+  recipe-maintainers:
+    - bollwyvl
+    - Kludex
