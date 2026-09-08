@@ -14,7 +14,7 @@ build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
   entry_points:
-    - httpx2 = httpx2:main
+    - httpx2 = httpx2._main:main
 
 requirements:
   host:
@@ -38,7 +38,7 @@ requirements:
     # http2
     - h2 >=3,<5
     # socks
-    - socksio 1.*
+    - socksio ==1.*
     # wsproto
     - wsproto>=1.2
     # zstd
@@ -47,6 +47,7 @@ requirements:
 test:
   imports:
     - httpx2
+    - httpx2.websockets
   requires:
     - pip
     - click >=8.4.2
