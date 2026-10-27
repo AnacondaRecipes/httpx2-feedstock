@@ -30,6 +30,7 @@ requirements:
     - anyio >=4.10
     - idna >=3.18
     - typing_extensions >=4.5.0 # [py<313]
+    # httpx2-jsfetch is Emscripten/Pyodide-only (sys_platform == 'emscripten'); not a conda platform
   run_constrained:
     # brotli
     - brotli >=1.2.0
