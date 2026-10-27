@@ -1,5 +1,5 @@
 {% set name = "httpx2" %}
-{% set version = "2.12.0" %}
+{% set version = "2.16.0" %}
 
 package:
   name: {{ name }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 7631fe9887a8a2275f4a2540e053aa670fcc50742864a9ae7c66e609fdcf12cf
+  sha256: 0d54c98128e8f2ff7fbbde0fca8c359e5f032edeaaaac443cdb7f31f685bcd7f
 
 build:
-  skip: true # [py<310]
+  skip: true # [py<311]
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation --disable-pip-version-check
   entry_points:
@@ -22,7 +22,7 @@ requirements:
     - hatchling
     - pip
     - python
-    - uv-dynamic-versioning >=0.8.0
+    - uv-dynamic-versioning >=0.14.1
   run:
     - python
     - truststore >=0.10
@@ -30,7 +30,10 @@ requirements:
     - anyio >=4.10
     - idna >=3.18
     - typing_extensions >=4.5.0 # [py<313]
+    # httpx2-jsfetch is Emscripten/Pyodide-only (sys_platform == 'emscripten'); not a conda platform
   run_constrained:
+    # brotli
+    - brotli >=1.2.0
     # cli
     - click >=8.4.2
     - pygments ==2.*
@@ -42,7 +45,7 @@ requirements:
     # wsproto
     - wsproto >=1.2
     # zstd
-    - backports.zstd >=1.0.0  # [py<313]
+    - backports.zstd >=1.0.0  # [py<314]
 
 test:
   imports:
@@ -57,6 +60,7 @@ test:
   commands:
     - pip check
     - httpx2 --help
+    # Upstream tests are not included in the PyPI sdist; only smoke tests can run.
 
 about:
   home: https://github.com/pydantic/httpx2
